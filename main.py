@@ -19,11 +19,11 @@ def record_audio(ask = None):
         try:
             text_data = r.recognize_google(audio_input)
         except sr.UnknownValueError as e1:
+            speak('Oups, i didn\'t hear you corectly ')
             print(e1.with_traceback())
-            speak('Oups, i didn\'t hear you corectly :( ...')
         except sr.RequestError as e2:
-            print(e2.with_traceback())
             speak('Sorry, the service is currently down')
+            print(e2.with_traceback())
         return text_data
 
 def respond(data):
@@ -44,7 +44,7 @@ def respond(data):
         speak('Here is the location of {}'.format(l))
     elif 'exit'.lower() or 'bye'.lower() or 'goodbye'.lower() in data.lower():
         #say goodbye randomly each time
-        farwell_expressions = ['See you later', 'Ok, goodbye', 'ByeBye']
+        farwell_expressions = ['See you later', 'Ok, goodbye', 'Okay...bye', 'Bye bye, butterfly', 'It has been emotional, bye','As you wish, jellyfish', 'Have a good day !']
         n = randint(0,len(farwell_expressions)-1)
         speak(farwell_expressions[n])
         exit()
@@ -60,9 +60,14 @@ def speak(sentence):
     print(sentence)
     os.remove(audio_file)
 
-speak('Listening...')
 
-while True:
 
-    text_data = record_audio()
-    respond(text_data)
+if __name__ == '__main__':
+    speak('How can i help you ?')
+    while True:
+        try:
+            text_data = record_audio()
+            respond(text_data)
+        except:
+            speak('I didn\'t get it, can you repeat what you just said ?')
+            continue
